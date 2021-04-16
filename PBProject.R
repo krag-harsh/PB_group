@@ -8,7 +8,7 @@ AEset1 = ArrayExpress("E-MEXP-3936")
 AEsetnorm1 = rma(AEset1)
 fac1 = grep("Factor.Value",colnames(pData(AEsetnorm1)), value=T)
 if (suppressWarnings(require("arrayQualityMetrics", quietly=TRUE))) {
-qanorm = arrayQualityMetrics(AEsetnorm1,outdir = "QAnorm",intgroup = fac)}
+  qanorm = arrayQualityMetrics(AEsetnorm1,outdir = "QAnorm",intgroup = fac)}
 
 express1 = exprs(AEsetnorm1)
 
@@ -55,4 +55,22 @@ de_genes <-tT[abs(tT$logFC) < 1.2,] #Extract genes which have logFC value < 0.2
 de_genes <-de_genes[de_genes$P.Val < 0.05,] #Extract genes which have adjPval < 0.05
 #Here we got 792 differentially expressed genes
 
+gene_symbols <- de_genes[de_genes$Gene.symbol != "",7]
 
+if (!requireNamespace("BiocManager", quietly = TRUE))
+  install.packages("BiocManager")
+
+BiocManager::install("annotate")
+
+library("Biobase")
+library("AnnotationDbi")
+library("hgu95av2.db") 
+library("GEOquery")
+library('annotate')
+
+PROBES<- as.character(de_genes$probe)
+
+OUT <- select(rat2302.db, PROBES, c("SYMBOL", "ENTREZID", "GENENAME"))
+select(hgu95av2.db, c("202147_s_at"), c("SYMBOL","ENTREZID", "GENENAME")) ##  This is just a trying example
+
+rownames
