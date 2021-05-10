@@ -50,10 +50,10 @@ tT <- topTable(fit2, adjust="fdr", sort.by="B", number=Inf)
 
 #tT <- subset(tT, select=c("ID","adj.P.Val","P.Value","t","B","logFC","Gene.symbol","Gene.title"))
 
-de_genes <-tT[abs(tT$logFC) < 1.2,] #Extract genes which have logFC value < 0.2
+de_genes <-tT[abs(tT$logFC) < 1.2,] #Extract genes which have logFC value < 1.2
 #de_genes <- tT[tT$P.Value<0.05,]
-de_genes <-de_genes[de_genes$P.Val < 0.05,] #Extract genes which have adjPval < 0.05
-#Here we got 792 differentially expressed genes
+de_genes <-de_genes[de_genes$P.Val < 0.05,] #Extract genes which have Pval < 0.05
+
 
 gene_symbols <- de_genes[de_genes$Gene.symbol != "",7]
 
